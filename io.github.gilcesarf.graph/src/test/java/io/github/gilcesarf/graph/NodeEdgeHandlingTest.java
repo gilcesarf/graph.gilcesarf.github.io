@@ -10,23 +10,28 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-public class GraphTest {
+public class NodeEdgeHandlingTest {
 	private static final String[] NODE_TYPES = new String[] { "Node Type 1", "Node Type 2", "Node Type 3" };
 	private static final String[] NODE_NAMES = new String[] { "Node Name 1", "Node Name 2", "Node Name 3" };
 
 	private Node[] nodes = new Node[3];
 	private Edge[] edges = new Edge[2];
 
+	private Graph graph = null;
+
 	@Before
 	public void setUp() throws Exception {
+		this.graph = new BaseGraph();
 		for (int i = 0; i < NODE_NAMES.length; i++) {
-			this.nodes[i] = new Node(NODE_TYPES[i], NODE_NAMES[i]);
+			this.nodes[i] = new Node(this.graph, NODE_TYPES[i], NODE_NAMES[i]);
 		}
 	}
 
 	@After
 	public void tearDown() throws Exception {
 		this.nodes = null;
+		this.edges = null;
+		this.graph = null;
 	}
 
 	@Test
@@ -34,8 +39,8 @@ public class GraphTest {
 		for (int i = 0; i < nodes.length; i++) {
 			checkNode(nodes[i], i);
 		}
-		edges[0] = new Edge(nodes[0], nodes[1]);
-		edges[1] = new Edge(nodes[1], nodes[2]);
+		edges[0] = this.graph.connect(nodes[0], nodes[1]);
+		edges[1] = this.graph.connect(nodes[1], nodes[2]);
 		checkAllEdgeSets();
 		try {
 			nodes[0].addSucessor(edges[1]);

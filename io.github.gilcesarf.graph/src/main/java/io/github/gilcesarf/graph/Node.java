@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class Node {
+	private Graph graph = null;
 	private String type = null;
 	private String name = null;
 	private Set<Edge> sucessors = new HashSet<Edge>();
@@ -12,16 +13,25 @@ public class Node {
 	private NodeData data = null;
 
 	/**
-	 * Create a new node of arbitrary type and name
+	 * Create a new node of arbitrary type and name within given graph.
 	 * 
-	 * @param type
-	 *            an arbitrary String to type the Node being created
-	 * @param name
-	 *            an arbitrary String to name the Node being created
+	 * @param graph the graph object that contains the node
+	 * @param type  an arbitrary String to type the Node being created
+	 * @param name  an arbitrary String to name the Node being created
+	 * @throws GraphException when a null graph is given
 	 */
-	public Node(String type, String name) {
+	public Node(Graph graph, String type, String name) throws GraphException {
+		if (graph == null) {
+			throw new GraphException("A Node cannot be created without a graph");
+		}
+		this.graph = graph;
 		this.type = type;
 		this.name = name;
+		this.graph.addNode(this);
+	}
+
+	public Graph getGraph() {
+		return this.graph;
 	}
 
 	public String getName() {
@@ -45,7 +55,7 @@ public class Node {
 	}
 
 	public void addSucessor(Edge edge) throws GraphException {
-		if (edge.getPredecessor() == this) {
+		if (edge.getPredecessor() == this && this.graph.equals(edge.getGraph())) {
 			this.sucessors.add(edge);
 		} else {
 			throw new GraphException("Invalid Edge Given");
@@ -53,7 +63,7 @@ public class Node {
 	}
 
 	public void addPredecessor(Edge edge) throws GraphException {
-		if (edge.getSucessor() == this) {
+		if (edge.getSuccessor() == this && this.graph.equals(edge.getGraph())) {
 			this.predecessors.add(edge);
 		} else {
 			throw new GraphException("Invalid Edge Given");

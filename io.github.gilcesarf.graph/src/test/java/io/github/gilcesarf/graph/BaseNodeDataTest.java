@@ -9,27 +9,32 @@ import org.junit.Test;
 public class BaseNodeDataTest {
 
 	private BaseNodeData nodeData = null;
+	private Graph graph = null;
+	private Node node = null;
 
 	@Before
 	public void setUp() {
 		this.nodeData = new BaseNodeData();
+		this.graph = new BaseGraph();
+		this.node = this.graph.createNode("JUnit", "Node 1", null);
 	}
 
 	@After
 	public void tearDown() {
 		this.nodeData = null;
+		this.graph = null;
+		this.node = null;
 	}
 
 	@Test
 	public void test() {
 		assertTrue(this.nodeData.getNode() == null);
-		Node n = new Node("JUnit Test", "Simple Node");
-		this.nodeData.setNode(n);
-		assertEquals(n, this.nodeData.getNode());
-		assertEquals(n.getData(), this.nodeData);
+		this.nodeData.setNode(this.node);
+		assertEquals(this.node, this.nodeData.getNode());
+		assertEquals(this.node.getData(), this.nodeData);
 		this.nodeData.setNode(null);
 		assertNull(this.nodeData.getNode());
-		assertNull(n.getData());
+		assertNull(this.node.getData());
 	}
 
 }
