@@ -25,9 +25,11 @@ public class Edge {
 		}
 
 		if (!graph.isDuplicatedEdgesAllowed()) {
-			// lookup for duplicated edges
+			boolean isDirected = graph.isDirected();
 			for (Edge l : graph.getEdgeSet()) {
-				if (predecessor.equals(l.getPredecessor()) && successor.equals(l.getSuccessor())) {
+				if ((predecessor.equals(l.getPredecessor()) && successor.equals(l.getSuccessor())) //
+						|| (!isDirected && //
+								predecessor.equals(l.getSuccessor()) && successor.equals(l.getPredecessor()))) {
 					throw new GraphException("Duplicated Edges not allowed.");
 				}
 			}

@@ -106,21 +106,8 @@ public class BaseGraph implements Graph {
 		}
 
 		// proceeds to edge creation
-		Edge e = null;
-		if (this.isDuplicatedEdgesAllowed()) {
-			e = new Edge(this, predecessor, successor);
-			this.edgeSet.add(e);
-		} else {
-			// lookup for duplicated edges: another edge that connects same given
-			// predecessor and successor
-			for (Edge l : edgeSet) {
-				if (predecessor.equals(l.getPredecessor()) && successor.equals(l.getSuccessor())) {
-					throw new GraphException("Duplicated Edges not allowed.");
-				}
-			}
-			e = new Edge(this, predecessor, successor);
-			this.edgeSet.add(e);
-		}
+		Edge e = new Edge(this, predecessor, successor);
+		this.edgeSet.add(e);
 		return e;
 	}
 

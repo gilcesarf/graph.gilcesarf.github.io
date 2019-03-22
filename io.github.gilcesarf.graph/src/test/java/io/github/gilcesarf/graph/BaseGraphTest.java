@@ -366,4 +366,148 @@ public class BaseGraphTest {
 
 	}
 
+	@Test
+	public void testEdgeConstructor() {
+		Edge e = null;
+		try {
+			e = new Edge(null, null, null);
+			fail("Expected a GraphException to be raised.");
+		} catch (GraphException ge) {
+			assertTrue(ge.getMessage().contains("Edge requires a non null graph"));
+		}
+		try {
+			e = new Edge(this.graph, null, null);
+			fail("Expected a GraphException to be raised.");
+		} catch (GraphException ge) {
+			assertTrue(ge.getMessage().contains("Edge requires a non null predecessor node"));
+		}
+		try {
+			e = new Edge(this.graph, this.predecessor, null);
+			fail("Expected a GraphException to be raised.");
+		} catch (GraphException ge) {
+			assertTrue(ge.getMessage().contains("Edge requires a non null successor node"));
+		}
+	}
+
+	@Test
+	public void testDuplicatedEdgesNonDirectedGraph() {
+		this.graph = null;
+		this.predecessor = null;
+		this.successor = null;
+		this.graph = new BaseGraph();
+		this.graph.disallowDuplicatedEdges();
+		this.predecessor = this.graph.createNode("JUnit", "Predecessor", null);
+		this.successor = this.graph.createNode("JUnit", "Successor", null);
+		Edge e1 = this.graph.connect(this.predecessor, this.successor);
+		// basic assertions
+		Set<Node> nodeSet = this.graph.getNodeSet();
+		assertNotNull(nodeSet);
+		assertEquals(2, nodeSet.size());
+		Set<Edge> edgeSet = this.graph.getEdgeSet();
+		assertNotNull(edgeSet);
+		assertEquals(1, edgeSet.size());
+		// try to add a duplicate node in non directed graph
+		Edge e2 = null;
+		try {
+			e2 = this.graph.connect(this.predecessor, this.successor);
+			fail("Expected a GraphException to be raised.");
+		} catch (GraphException ge) {
+			assertTrue(ge.getMessage().contains("Duplicated Edges not allowed"));
+		}
+		// try to add a duplicate node in non directed graph
+		try {
+			e2 = this.graph.connect(this.successor, this.predecessor);
+			fail("Expected a GraphException to be raised.");
+		} catch (GraphException ge) {
+			assertTrue(ge.getMessage().contains("Duplicated Edges not allowed"));
+		}
+		Node node3 = this.graph.createNode("JUnit", "Node 3", null);
+		try {
+			e2 = this.graph.connect(this.successor, node3);
+			// basic assertions
+			nodeSet = this.graph.getNodeSet();
+			assertNotNull(nodeSet);
+			assertEquals(3, nodeSet.size());
+			edgeSet = this.graph.getEdgeSet();
+			assertNotNull(edgeSet);
+			assertEquals(2, edgeSet.size());
+
+		} catch (GraphException ge) {
+			ge.printStackTrace();
+			fail("Unexpected Exception");
+		}
+	}
+
+	@Test
+	public void testDuplicatedEdgesDirectedGraph() {
+		this.graph = null;
+		this.predecessor = null;
+		this.successor = null;
+		this.graph = new BaseGraph(true);
+		this.graph.disallowDuplicatedEdges();
+		this.predecessor = this.graph.createNode("JUnit", "Predecessor", null);
+		this.successor = this.graph.createNode("JUnit", "Successor", null);
+		Edge e1 = this.graph.connect(this.predecessor, this.successor);
+		// basic assertions
+		Set<Node> nodeSet = this.graph.getNodeSet();
+		assertNotNull(nodeSet);
+		assertEquals(2, nodeSet.size());
+		Set<Edge> edgeSet = this.graph.getEdgeSet();
+		assertNotNull(edgeSet);
+		assertEquals(1, edgeSet.size());
+		// try to add a duplicate node in non directed graph
+		Edge e2 = null;
+		try {
+			e2 = this.graph.connect(this.predecessor, this.successor);
+			fail("Expected a GraphException to be raised.");
+		} catch (GraphException ge) {
+			assertTrue(ge.getMessage().contains("Duplicated Edges not allowed"));
+		}
+		// try to add a duplicate node in non directed graph
+		try {
+			e2 = this.graph.connect(this.successor, this.predecessor);
+			// basic assertions
+			nodeSet = this.graph.getNodeSet();
+			assertNotNull(nodeSet);
+			assertEquals(2, nodeSet.size());
+			edgeSet = this.graph.getEdgeSet();
+			assertNotNull(edgeSet);
+			assertEquals(2, edgeSet.size());
+		} catch (GraphException ge) {
+			ge.printStackTrace();
+			fail("Unexpected Exception");
+		}
+		Node node3 = this.graph.createNode("JUnit", "Node 3", null);
+		Edge e3 = null;
+		try {
+			e3 = this.graph.connect(this.successor, node3);
+			// basic assertions
+			nodeSet = this.graph.getNodeSet();
+			assertNotNull(nodeSet);
+			assertEquals(3, nodeSet.size());
+			edgeSet = this.graph.getEdgeSet();
+			assertNotNull(edgeSet);
+			assertEquals(3, edgeSet.size());
+		} catch (GraphException ge) {
+			ge.printStackTrace();
+			fail("Unexpected Exception");
+		}
+	}
+
+	@Test
+	public void testNode() {
+		Graph g1 = new BaseGraph();
+		Node n1 = null;
+		Node n2 = null;
+		Node n3 = null;
+		try {
+			n1 = new Node(null, null, null);
+			fail("Expected a GraphException to be raised.");
+		} catch (GraphException ge) {
+			assertTrue(ge.getMessage().contains("A Node cannot be created without a graph"));
+		}
+		n1 = g1.createNode("JUnit", "Node 1", null);
+		n2 = g1.createNode("JUnit", "Node 2", null);
+		n3 = g1.createNode("JUnit", "Node 3", null);
+	}
 }
