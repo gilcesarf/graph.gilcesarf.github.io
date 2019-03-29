@@ -17,6 +17,10 @@ public interface Graph {
 	public Set<Node> getNodeSet();
 
 	public Set<Edge> getEdgeSet();
+	
+	public int getNodeSetSize();
+
+	public int getEdgeSetSize();
 
 	public boolean isDuplicatedEdgesAllowed();
 

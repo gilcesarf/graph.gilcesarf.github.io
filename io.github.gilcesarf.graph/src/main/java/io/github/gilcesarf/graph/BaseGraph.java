@@ -139,4 +139,14 @@ public class BaseGraph implements Graph {
 		this.duplicatedEdgesAllowed = false;
 	}
 
+	@Override
+	public int getNodeSetSize() {
+		return this.nodeSet.size();
+	}
+
+	@Override
+	public int getEdgeSetSize() {
+		return this.edgeSet.size();
+	}
+
 }

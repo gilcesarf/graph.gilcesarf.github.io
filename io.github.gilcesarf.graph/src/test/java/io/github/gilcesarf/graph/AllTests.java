@@ -5,7 +5,8 @@ import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
-@SuiteClasses({ BaseEdgeDataTest.class, BaseNodeDataTest.class, NodeEdgeHandlingTest.class, BaseGraphTest.class })
+@SuiteClasses({ BaseEdgeDataTest.class, BaseNodeDataTest.class, NodeEdgeHandlingTest.class, BaseGraphTest.class,
+		NodeConnectionGraphTest.class })
 public class AllTests {
 
 }
